@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片压缩工具</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 顶部标题区 -->
+    <header class="header">
+        <h1>图片压缩工具</h1>
+        <p class="subtitle">简单易用的在线图片压缩工具</p>
+    </header>
+
+    <main class="container">
+        <!-- 图片上传区 -->
+        <section class="upload-section">
+            <div class="upload-area" id="dropZone">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='43' viewBox='0 0 50 43'%3E%3Cpath d='M48.4 26.5c-.9 0-1.7.7-1.7 1.7v11.6h-43.3v-11.6c0-.9-.7-1.7-1.7-1.7s-1.7.7-1.7 1.7v13.2c0 .9.7 1.7 1.7 1.7h46.7c.9 0 1.7-.7 1.7-1.7v-13.2c0-1-.7-1.7-1.7-1.7zm-24.5 6.1c.3.3.8.5 1.2.5.4 0 .9-.2 1.2-.5l10-11.6c.7-.7.7-1.7 0-2.4s-1.7-.7-2.4 0l-7.1 8.3v-25.3c0-.9-.7-1.7-1.7-1.7s-1.7.7-1.7 1.7v25.3l-7.1-8.3c-.7-.7-1.7-.7-2.4 0s-.7 1.7 0 2.4l10 11.6z'%3E%3C/path%3E%3C/svg%3E" alt="上传图标" class="upload-icon">
+                <p>拖拽图片到这里或点击上传</p>
+                <input type="file" id="fileInput" accept="image/*" multiple class="file-input">
+            </div>
+        </section>
+
+        <div class="main-content">
+            <!-- 图片列表区 -->
+            <section class="image-list-section">
+                <h3>图片列表</h3>
+                <div id="imageList" class="image-list"></div>
+            </section>
+
+            <div class="right-content">
+                <!-- 压缩设置区 -->
+                <section class="compress-section">
+                    <div class="compress-control">
+                        <label for="quality">压缩质量:</label>
+                        <input type="range" id="quality" min="0" max="100" value="80" class="quality-slider">
+                        <span id="qualityValue">80%</span>
+                    </div>
+                    <!-- 添加图片编辑工具栏 -->
+                    <div class="edit-toolbar">
+                        <button id="cropBtn" class="edit-btn" title="裁剪">
+                            <svg viewBox="0 0 24 24" width="24" height="24">
+                                <path fill="currentColor" d="M17 15h2V7c0-1.1-.9-2-2-2H9v2h8v8zM7 17V1H5v4H1v2h4v10c0 1.1.9 2 2 2h10v4h2v-4h4v-2H7z"/>
+                            </svg>
+                        </button>
+                        <button id="rotateBtn" class="edit-btn" title="旋转">
+                            <svg viewBox="0 0 24 24" width="24" height="24">
+                                <path fill="currentColor" d="M7.11 8.53L5.7 7.11C4.8 8.27 4.24 9.61 4.07 11h2.02c.14-.87.49-1.72 1.02-2.47zM6.09 13H4.07c.17 1.39.72 2.73 1.62 3.89l1.41-1.42c-.52-.75-.87-1.59-1.01-2.47zm1.01 5.32c1.16.9 2.51 1.44 3.9 1.61V17.9c-.87-.15-1.71-.49-2.46-1.03L7.1 18.32zM13 4.07V1L8.45 5.55 13 10V6.09c2.84.48 5 2.94 5 5.91s-2.16 5.43-5 5.91v2.02c3.95-.49 7-3.85 7-7.93s-3.05-7.44-7-7.93z"/>
+                            </svg>
+                        </button>
+                        <button id="flipBtn" class="edit-btn" title="翻转">
+                            <svg viewBox="0 0 24 24" width="24" height="24">
+                                <path fill="currentColor" d="M15 21h2v-2h-2v2zm4-12h2V7h-2v2zM3 5v14c0 1.1.9 2 2 2h4v-2H5V5h4V3H5c-1.1 0-2 .9-2 2zm16-2v2h2c0-1.1-.9-2-2-2zm-8 20h2V1h-2v22zm8-6h2v-2h-2v2zM15 5h2V3h-2v2zm4 8h2v-2h-2v2zm0 8c1.1 0 2-.9 2-2h-2v2z"/>
+                            </svg>
+                        </button>
+                        <button id="resizeBtn" class="edit-btn" title="调整大小">
+                            <svg viewBox="0 0 24 24" width="24" height="24">
+                                <path fill="currentColor" d="M19 12h-2v3h-3v2h5v-5zM7 9h3V7H5v5h2V9zm14-6H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16.01H3V4.99h18v14.02z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- 添加编辑对话框 -->
+                <div id="editDialog" class="edit-dialog">
+                    <div class="edit-dialog-content">
+                        <div class="edit-dialog-header">
+                            <h3>图片编辑</h3>
+                            <button id="closeEditDialog" class="close-btn">&times;</button>
+                        </div>
+                        <div class="edit-dialog-body">
+                            <canvas id="editCanvas"></canvas>
+                        </div>
+                        <div class="edit-dialog-footer">
+                            <button id="cancelEdit" class="dialog-btn">取消</button>
+                            <button id="applyEdit" class="dialog-btn primary">应用</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 预览区 -->
+                <section class="preview-section">
+                    <div class="preview-container">
+                        <div class="preview-box">
+                            <h3>原始图片</h3>
+                            <div class="image-container">
+                                <img id="originalPreview" alt="原图预览">
+                            </div>
+                            <div class="file-info">
+                                <span>文件大小: </span>
+                                <span id="originalSize">-</span>
+                            </div>
+                        </div>
+                        <div class="preview-box">
+                            <h3>压缩后</h3>
+                            <div class="image-container">
+                                <img id="compressedPreview" alt="压缩预览">
+                                <div class="compression-progress-container">
+                                    <div id="compressionProgress" class="compression-progress"></div>
+                                </div>
+                            </div>
+                            <div class="file-info">
+                                <span>文件大小: </span>
+                                <span id="compressedSize">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 下载区 -->
+                <section class="download-section">
+                    <button id="downloadBtn" class="download-btn" disabled>下载当前图片</button>
+                    <button id="batchDownloadBtn" class="download-btn batch-btn" disabled>批量下载</button>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- 加载压缩库 -->
+    <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html> 
